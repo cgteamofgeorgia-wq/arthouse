@@ -514,8 +514,8 @@ footer {
 }
 
 .modal-content {
-  max-width: 1280px;
-  width: 92%;
+  max-width: 1680px;
+  width: min(96vw, 1680px);
   text-align: center;
   position: relative;
 }
@@ -532,12 +532,54 @@ footer {
 }
 
 #modalImage {
-  max-height: 82vh;
-  width: auto;
+  max-height: 90vh;
+  width: 100%;
   max-width: 100%;
   object-fit: contain;
   touch-action: none;
   user-select: none;
+}
+
+.zoom-controls {
+  position: absolute;
+  left: 32px;
+  top: 40px;
+  display: inline-flex;
+  gap: 10px;
+  z-index: 5;
+}
+
+.zoom-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  background: rgba(20, 20, 20, 0.5);
+  color: white;
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+  transition: transform 0.15s ease, background 0.15s ease, border-color 0.15s ease;
+}
+
+.zoom-btn:hover {
+  transform: translateY(-1px);
+  background: rgba(20, 20, 20, 0.65);
+  border-color: rgba(255, 255, 255, 0.32);
+}
+
+@media (max-width: 520px) {
+  .close-btn {
+    top: 18px;
+    right: 18px;
+    font-size: 44px;
+  }
+
+  .zoom-controls {
+    left: 18px;
+    top: 18px;
+  }
 }
 
 .modal-caption {

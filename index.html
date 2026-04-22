@@ -118,8 +118,8 @@
 
         /* Gallery Modal Styles */
         .modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(10, 10, 10, 0.98); overflow: hidden; }
-        .modal-content { position: relative; margin: auto; top: 50%; transform: translateY(-50%); width: 85%; max-width: 1200px; text-align: center; }
-        #modalImage { max-width: 100%; max-height: 80vh; object-fit: contain; }
+        .modal-content { position: relative; margin: auto; top: 50%; transform: translateY(-50%); width: min(96vw, 1680px); max-width: 1680px; text-align: center; }
+        #modalImage { width: 100%; max-width: 100%; max-height: 90vh; object-fit: contain; touch-action: none; user-select: none; }
         .close-btn { color: var(--white); position: absolute; top: 30px; right: 50px; font-size: 50px; font-weight: 300; cursor: pointer; transition: 0.3s; z-index: 2001; font-family: 'Montserrat', sans-serif;}
         .close-btn:hover { color: var(--accent); transform: rotate(90deg); }
         .nav-btn { cursor: pointer; position: absolute; top: 50%; width: 60px; height: 60px; margin-top: -30px; color: white; font-size: 24px; transition: 0.3s; border-radius: 50%; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); z-index: 2001; display: flex; justify-content: center; align-items: center;}
@@ -129,6 +129,10 @@
         .modal-caption { color: var(--white); font-size: 24px; font-family: 'Playfair Display', serif; margin-top: 25px; }
         .modal-subcaption { color: var(--accent); font-size: 12px; margin-top: 5px; text-transform: uppercase; letter-spacing: 2px; }
         .image-counter { color: #666; font-size: 11px; margin-top: 15px; letter-spacing: 2px;}
+
+        .zoom-controls { position: absolute; left: 30px; top: 30px; display: flex; gap: 10px; z-index: 2002; }
+        .zoom-btn { width: 44px; height: 44px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.22); background: rgba(20,20,20,0.55); color: var(--white); font-size: 18px; font-weight: 600; cursor: pointer; backdrop-filter: blur(8px); transition: 0.15s; }
+        .zoom-btn:hover { transform: translateY(-1px); background: rgba(20,20,20,0.7); border-color: rgba(255,255,255,0.32); }
 
         /* Responsive */
         @media (max-width: 900px) {
@@ -316,6 +320,11 @@
         <button class="nav-btn prev" onclick="changeSlide(-1)">&#10094;</button>
         <button class="nav-btn next" onclick="changeSlide(1)">&#10095;</button>
         <div class="modal-content">
+            <div class="zoom-controls" aria-label="Zoom controls">
+                <button class="zoom-btn" type="button" onclick="zoomIn()" aria-label="Zoom in">+</button>
+                <button class="zoom-btn" type="button" onclick="zoomOut()" aria-label="Zoom out">−</button>
+                <button class="zoom-btn" type="button" onclick="resetZoom()" aria-label="Reset zoom">⤾</button>
+            </div>
             <img id="modalImage" src="" alt="Project Image">
             <div class="modal-caption" id="modalCaption">Project Name</div>
             <div class="modal-subcaption" id="modalSubcaption">Details</div>
@@ -368,12 +377,123 @@
         let currentProjectKey = '';
         let currentImageIndex = 0;
 
+        // ===== Modal zoom/pan =====
+        let _zoomScale = 1;
+        let _zoomTx = 0;
+        let _zoomTy = 0;
+        let _dragging = false;
+        let _dragStartX = 0;
+        let _dragStartY = 0;
+        let _dragStartTx = 0;
+        let _dragStartTy = 0;
+        const _MIN_ZOOM = 1;
+        const _MAX_ZOOM = 4;
+
+        function _clamp(n, min, max) { return Math.min(max, Math.max(min, n)); }
+
+        function _applyZoom() {
+            const img = document.getElementById('modalImage');
+            if (!img) return;
+            img.style.transform = `translate3d(${_zoomTx}px, ${_zoomTy}px, 0) scale(${_zoomScale})`;
+            img.style.transformOrigin = 'center center';
+            img.style.willChange = 'transform';
+            img.style.cursor = _zoomScale > 1 ? (_dragging ? 'grabbing' : 'grab') : 'zoom-in';
+        }
+
+        function resetZoom() {
+            _zoomScale = 1;
+            _zoomTx = 0;
+            _zoomTy = 0;
+            _applyZoom();
+        }
+
+        function _setZoom(nextScale, clientX, clientY) {
+            const img = document.getElementById('modalImage');
+            if (!img) return;
+            const newScale = _clamp(nextScale, _MIN_ZOOM, _MAX_ZOOM);
+            if (newScale === _zoomScale) return;
+
+            const rect = img.getBoundingClientRect();
+            const ax = clientX ?? rect.left + rect.width / 2;
+            const ay = clientY ?? rect.top + rect.height / 2;
+            const dx = ax - (rect.left + rect.width / 2);
+            const dy = ay - (rect.top + rect.height / 2);
+
+            const ratio = newScale / _zoomScale;
+            _zoomTx = _zoomTx - dx * (ratio - 1);
+            _zoomTy = _zoomTy - dy * (ratio - 1);
+            _zoomScale = newScale;
+            _applyZoom();
+        }
+
+        function zoomIn() { _setZoom(_zoomScale * 1.2); }
+        function zoomOut() { _setZoom(_zoomScale / 1.2); }
+
+        function _wireZoomEvents() {
+            const img = document.getElementById('modalImage');
+            const modal = document.getElementById('galleryModal');
+            if (!img || !modal) return;
+
+            img.addEventListener('load', resetZoom);
+
+            img.addEventListener('wheel', (e) => {
+                if (modal.style.display !== 'block') return;
+                e.preventDefault();
+                const delta = -e.deltaY;
+                const zoomIntensity = 0.0018;
+                _setZoom(_zoomScale * (1 + delta * zoomIntensity), e.clientX, e.clientY);
+            }, { passive: false });
+
+            let lastClickAt = 0;
+            img.addEventListener('click', (e) => {
+                const now = Date.now();
+                const dbl = now - lastClickAt < 280;
+                lastClickAt = now;
+                if (!dbl) return;
+                if (_zoomScale === 1) _setZoom(2.2, e.clientX, e.clientY);
+                else resetZoom();
+            });
+
+            img.addEventListener('pointerdown', (e) => {
+                if (_zoomScale <= 1) return;
+                _dragging = true;
+                img.setPointerCapture?.(e.pointerId);
+                _dragStartX = e.clientX;
+                _dragStartY = e.clientY;
+                _dragStartTx = _zoomTx;
+                _dragStartTy = _zoomTy;
+                _applyZoom();
+            });
+
+            window.addEventListener('pointermove', (e) => {
+                if (!_dragging) return;
+                _zoomTx = _dragStartTx + (e.clientX - _dragStartX);
+                _zoomTy = _dragStartTy + (e.clientY - _dragStartY);
+                _applyZoom();
+            });
+
+            window.addEventListener('pointerup', () => {
+                if (!_dragging) return;
+                _dragging = false;
+                _applyZoom();
+            });
+
+            document.addEventListener('keydown', function(event) {
+                if (document.getElementById('galleryModal').style.display === "block") {
+                    if (event.key === "+" || event.key === "=") { event.preventDefault(); zoomIn(); }
+                    if (event.key === "-") { event.preventDefault(); zoomOut(); }
+                    if (event.key === "0") { event.preventDefault(); resetZoom(); }
+                }
+            });
+        }
+
         function openModal(projectKey) {
             currentProjectKey = projectKey;
             currentImageIndex = 0;
             document.getElementById('galleryModal').style.display = "block";
             document.body.style.overflow = "hidden"; 
             updateGalleryUI();
+            resetZoom();
         }
 
         function closeModal() {
@@ -387,6 +507,7 @@
             if (currentImageIndex >= project.images.length) currentImageIndex = 0;
             else if (currentImageIndex < 0) currentImageIndex = project.images.length - 1;
             updateGalleryUI();
+            resetZoom();
         }
 
         function updateGalleryUI() {
@@ -418,6 +539,8 @@
                 if (event.key === "ArrowLeft") changeSlide(-1);
             }
         });
+
+        _wireZoomEvents();
     </script>
 </body>
 </html>

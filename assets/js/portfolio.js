@@ -61,6 +61,14 @@ function initImageZoomPan(modal) {
     img.style.cursor = "zoom-in";
   }
 
+  function zoomIn() {
+    setScale(scale * 1.2);
+  }
+
+  function zoomOut() {
+    setScale(scale / 1.2);
+  }
+
   function setScale(nextScale, anchorClientX, anchorClientY) {
     const newScale = clamp(nextScale, MIN_SCALE, MAX_SCALE);
     if (newScale === scale) return;
@@ -157,7 +165,7 @@ function initImageZoomPan(modal) {
   img.addEventListener("load", resetTransform);
   resetTransform();
 
-  return () => {
+  const cleanup = () => {
     img.removeEventListener("wheel", onWheel);
     img.removeEventListener("pointerdown", onPointerDown);
     window.removeEventListener("pointermove", onPointerMove);
@@ -171,6 +179,8 @@ function initImageZoomPan(modal) {
     img.style.transform = "";
     img.style.cursor = "";
   };
+
+  return { cleanup, zoomIn, zoomOut, reset: resetTransform };
 }
 
 function openModal(key) {
@@ -223,8 +233,24 @@ function openModal(key) {
   }
 
   // Zoom/Pan behavior
-  if (modal._zoomCleanup) modal._zoomCleanup();
-  modal._zoomCleanup = initImageZoomPan(modal);
+  if (modal._zoomApi?.cleanup) modal._zoomApi.cleanup();
+  modal._zoomApi = initImageZoomPan(modal);
+
+  // Zoom controls
+  modal.querySelectorAll("[data-zoom]").forEach((btn) => {
+    btn.addEventListener(
+      "click",
+      (e) => {
+        e.preventDefault();
+        const action = btn.getAttribute("data-zoom");
+        if (!modal._zoomApi) return;
+        if (action === "in") modal._zoomApi.zoomIn?.();
+        else if (action === "out") modal._zoomApi.zoomOut?.();
+        else if (action === "reset") modal._zoomApi.reset?.();
+      },
+      { passive: false }
+    );
+  });
 
   // Focus trap inside modal
   const focusableSelector =
@@ -272,9 +298,9 @@ function closeModal() {
     document.body.classList.remove("modal-open");
     delete modal.dataset.currentProjectKey;
 
-    if (modal._zoomCleanup) {
-      modal._zoomCleanup();
-      modal._zoomCleanup = null;
+    if (modal._zoomApi?.cleanup) {
+      modal._zoomApi.cleanup();
+      modal._zoomApi = null;
     }
   };
 
