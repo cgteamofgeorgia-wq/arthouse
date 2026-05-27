@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -135,11 +135,11 @@
     <div class="logo">ART <span>HOUSE</span></div>
     <nav>
       <ul>
-        <li><a href="#hero">Home</a></li>
-        <li><a href="#about">About</a></li>
-        <li><a href="#services">Services</a></li>
-        <li><a href="#portfolio">Projects</a></li>
-        <li><a href="#contact">Contact</a></li>
+        <li><a href="#hero">Главная</a></li>
+        <li><a href="#about">О нас</a></li>
+        <li><a href="#services">Услуги</a></li>
+        <li><a href="#portfolio">Проекты</a></li>
+        <li><a href="#contact">Контакты</a></li>
       </ul>
     </nav>
     <div class="lang-switch"><a href="#">GE</a> &nbsp;|&nbsp; <a href="#">EN</a> &nbsp;|&nbsp; <a href="#">RU</a></div>
@@ -148,79 +148,156 @@
   <section id="hero">
     <div class="hero-bg"></div>
     <div class="hero-content">
-      <h1>Shaping the Future of Space</h1>
-      <p>Contemporary architecture and ergonomic design</p>
-      <a href="#portfolio" class="btn">See our projects</a>
+      <h1>Формируем будущее пространства</h1>
+      <p>Современная архитектура и эргономичный дизайн</p>
+      <a href="#portfolio" class="btn">Смотреть проекты</a>
     </div>
   </section>
 
   <section id="about">
-    <h2 class="section-title">Why “Art House”?</h2>
+    <h2 class="section-title">Почему «Арт-Хаус»?</h2>
     <p class="about-text">
-      “Art House” architectural studio offers full design services for private residences, public and commercial buildings, and interior design. Our team ensures seamless delivery from the initial concept to a built reality.
+      Архитектурная студия «Арт‑Хаус» предлагает полный комплекс проектных услуг: для частных жилых домов, общественных и коммерческих зданий, а также интерьеров. Наша команда обеспечивает реализацию идеи от эскиза до реального результата.
     </p>
   </section>
 
   <section id="services">
-    <h2 class="section-title">Our Services</h2>
+    <h2 class="section-title">Наши услуги</h2>
     <div class="services-grid">
       <div class="service-card">
-        <h3>Architecture</h3>
-        <p>End-to-end planning and design for public, commercial, and private residential buildings.</p>
+        <h3>Архитектура</h3>
+        <p>Полный цикл проектирования и планирования для общественных, коммерческих и индивидуальных жилых объектов.</p>
       </div>
       <div class="service-card">
-        <h3>Interior Design</h3>
-        <p>Ergonomic space planning, contemporary interiors, and material selection.</p>
+        <h3>Дизайн интерьера</h3>
+        <p>Эргономичное планирование внутренних пространств, современный дизайн и подбор материалов.</p>
       </div>
       <div class="service-card">
-        <h3>Cost Estimation</h3>
-        <p>Preliminary consultation and accurate project cost calculation.</p>
-        <a href="[forarchitects.ge](https://www.forarchitects.ge/Arch)" target="_blank" class="calc-link">Open calculator &rarr;</a>
+        <h3>Смета и расчёты</h3>
+        <p>Предварительная консультация и точный расчёт стоимости проекта.</p>
+        <a href="[forarchitects.ge](https://www.forarchitects.ge/Arch)" target="_blank" class="calc-link">Открыть калькулятор &rarr;</a>
       </div>
     </div>
   </section>
 
   <section id="portfolio">
-    <h2 class="section-title">Completed Projects</h2>
+    <h2 class="section-title">Реализованные проекты</h2>
     
     <div class="filters">
-      <button class="filter-btn active" onclick="filterProjects('all')">All</button>
-      <button class="filter-btn" onclick="filterProjects('commercial')">Commercial</button>
-      <button class="filter-btn" onclick="filterProjects('residential')">Residential</button>
+      <button class="filter-btn active" onclick="filterProjects('all')">Все</button>
+      <button class="filter-btn" onclick="filterProjects('commercial')">Коммерческие</button>
+      <button class="filter-btn" onclick="filterProjects('residential')">Жилые</button>
     </div>
 
     <div class="portfolio-grid">
       <div class="portfolio-item commercial" onclick="openModal('kutaisi-hotel')">
         <div class="portfolio-img" style="background-image: url('images/kutaisi-hotel.jpg');"></div>
-        <div class="portfolio-overlay"><span>Hotel Complex</span><p>Kutaisi / 2022</p></div>
+        <div class="portfolio-overlay"><span>Гостиничный комплекс</span><p>Кутаиси / 2022</p></div>
       </div>
       <div class="portfolio-item commercial" onclick="openModal('olympic-hotel')">
         <div class="portfolio-img" style="background-image: url('images/olympic-hotel.jpg');"></div>
-        <div class="portfolio-overlay"><span>Olympic Hotel</span><p>Tbilisi / 2015</p></div>
+        <div class="portfolio-overlay"><span>Отель «Олимпиец»</span><p>Тбилиси / 2015</p></div>
       </div>
       <div class="portfolio-item commercial" onclick="openModal('astana-mall')">
         <div class="portfolio-img" style="background-image: url('images/astana-mall.jpg');"></div>
-        <div class="portfolio-overlay"><span>Shopping Center</span><p>Astana / 2023</p></div>
+        <div class="portfolio-overlay"><span>Торговый центр</span><p>Астана / 2023</p></div>
       </div>
       <div class="portfolio-item commercial" onclick="openModal('botanic-cafe')">
         <div class="portfolio-img" style="background-image: url('images/botanic-cafe.jpg');"></div>
-        <div class="portfolio-overlay"><span>Botanical Garden Cafe</span><p>Tbilisi / 2023</p></div>
+        <div class="portfolio-overlay"><span>Кафе в Ботаническом саду</span><p>Тбилиси / 2023</p></div>
       </div>
       <div class="portfolio-item commercial" onclick="openModal('bakuriani-cafe')">
         <div class="portfolio-img" style="background-image: url('images/bakuriani-cafe.jpg');"></div>
-        <div class="portfolio-overlay"><span>Cafe-Bar</span><p>Bakuriani / 2009</p></div>
+        <div class="portfolio-overlay"><span>Кафе-бар</span><p>Бакуриани / 2009</p></div>
       </div>
       <div class="portfolio-item commercial" onclick="openModal('kiu-block')">
         <div class="portfolio-img" style="background-image: url('images/kiu-block.jpg');"></div>
-        <div class="portfolio-overlay"><span>Building “K”</span><p>Kutaisi International University / 2020</p></div>
+        <div class="portfolio-overlay"><span>Корпус «К»</span><p>Кутаисский междунар. ун-т / 2020</p></div>
       </div>
       <div class="portfolio-item commercial" onclick="openModal('evangelist-center')">
         <div class="portfolio-img" style="background-image: url('images/evangelist-center.jpg');"></div>
-        <div class="portfolio-overlay"><span>Evangelists Center</span><p>Kutaisi / 2019</p></div>
+        <div class="portfolio-overlay"><span>Центр евангелистов</span><p>Кутаиси / 2019</p></div>
       </div>
       <div class="portfolio-item commercial" onclick="openModal('aesthetic-center')">
         <div class="portfolio-img" style="background-image: url('images/aesthetic-center.jpg');"></div>
-        <div class="portfolio-overlay"><span>Aesthetic Center</span><p>Tbilisi / 2013</p></div>
+        <div class="portfolio-overlay"><span>Эстетический центр</span><p>Тбилиси / 2013</p></div>
       </div>
       <div class="portfolio-item commercial" onclick="openModal('rikoti-emergency')">
-        <div class="portfolio-img" style="background-image: url('images/rik
+        <div class="portfolio-img" style="background-image: url('images/rikoti-emergency.jpg');"></div>
+        <div class="portfolio-overlay"><span>Пункт экстренной помощи — Рикоти</span><p>с. Борити / 2008</p></div>
+      </div>
+      <div class="portfolio-item commercial" onclick="openModal('proservice-data')">
+        <div class="portfolio-img" style="background-image: url('images/proservice-data.jpg');"></div>
+        <div class="portfolio-overlay"><span>Дата-центр Proservice</span><p>Тбилиси / 2013</p></div>
+      </div>
+      <div class="portfolio-item commercial" onclick="openModal('intelcom-office')">
+        <div class="portfolio-img" style="background-image: url('images/intelcom-office.jpg');"></div>
+        <div class="portfolio-overlay"><span>Офисное здание</span><p>Тбилиси / 2014</p></div>
+      </div>
+
+      <div class="portfolio-item residential" onclick="openModal('pantiani-house')">
+        <div class="portfolio-img" style="background-image: url('images/pantiani-house.jpg');"></div>
+        <div class="portfolio-overlay"><span>Жилой дом</span><p>с. Пантиани / 2022</p></div>
+      </div>
+      <div class="portfolio-item residential" onclick="openModal('kaklebi-2010')">
+        <div class="portfolio-img" style="background-image: url('images/kaklebi-2010.jpg');"></div>
+        <div class="portfolio-overlay"><span>Жилой дом</span><p>Тбилиси, Каклеби / 2010</p></div>
+      </div>
+      <div class="portfolio-item residential" onclick="openModal('kaklebi-2023')">
+        <div class="portfolio-img" style="background-image: url('images/kaklebi-2023.jpg');"></div>
+        <div class="portfolio-overlay"><span>Жилой дом</span><p>Тбилиси, Каклеби / 2023</p></div>
+      </div>
+      <div class="portfolio-item residential" onclick="openModal('dighomi-house')">
+        <div class="portfolio-img" style="background-image: url('images/dighomi-house.jpg');"></div>
+        <div class="portfolio-overlay"><span>Жилой дом</span><p>Тбилиси, Дигоми / 2012</p></div>
+      </div>
+      <div class="portfolio-item residential" onclick="openModal('saguramo-2007')">
+        <div class="portfolio-img" style="background-image: url('images/saguramo-2007.jpg');"></div>
+        <div class="portfolio-overlay"><span>Жилой дом</span><p>Сагурамо / 2007</p></div>
+      </div>
+      <div class="portfolio-item residential" onclick="openModal('natakhtari-house')">
+        <div class="portfolio-img" style="background-image: url('images/natakhtari-house.jpg');"></div>
+        <div class="portfolio-overlay"><span>Жилой дом</span><p>Натахтари / 2021</p></div>
+      </div>
+      <div class="portfolio-item residential" onclick="openModal('saguramo-2021')">
+        <div class="portfolio-img" style="background-image: url('images/saguramo-2021.jpg');"></div>
+        <div class="portfolio-overlay"><span>Жилой дом</span><p>Сагурамо / 2021</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact">
+    <h2 class="section-title">Свяжитесь с нами</h2>
+    <div class="contact-container">
+      
+      <div class="contact-info">
+        <h3>Контактная информация</h3>
+        <p><strong>Адрес:</strong> Тбилиси, пр. И. Чавчавадзе 75</p>
+        <p><strong>Телефон:</strong> +995 599 26 00 59</p>
+        <p><strong>E‑mail:</strong> art-house@arthousearchitect.com</p>
+        <p style="margin-top: 20px;">
+          <strong>Партнёры:</strong> <a href="[materialzon.com](http://www.materialzon.com)" target="_blank" style="color: var(--accent); text-decoration: underline;">Materialzon.com</a>
+        </p>
+        
+        <div class="social-links">
+          <a href="[facebook.com](https://www.facebook.com/arthouse.ge)" target="_blank">Fb</a>
+          <a href="#">Tw</a>
+          <a href="#">Yt</a>
+        </div>
+      </div>
+
+      <!-- Форма обратной связи (Formspree) -->
+      <form class="contact-form" action="[formspree.io](https://formspree.io/f/mgoqpqjq)" method="POST">
+        <input type="text" name="name" placeholder="Ваше имя" required>
+        <input type="email" name="email" placeholder="E‑mail" required>
+        <textarea rows="4" name="message" placeholder="Сообщение..." required></textarea>
+        <input type="hidden" name="_subject" value="Новое сообщение с сайта Art House Architects">
+        <button type="submit">Отправить</button>
+      </form>
+      <!-- Конец формы -->
+      
+    </div>
+
+    <div class="footer-bottom">
+      <p>Все авторские права защищены ООО «Артхауз» &copy; 2009–2026</p>
+      <p>С
