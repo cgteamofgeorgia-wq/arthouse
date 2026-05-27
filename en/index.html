@@ -1,313 +1,226 @@
 <!DOCTYPE html>
-<html lang="en" data-current-lang="en">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Art House Architects</title>
 
-    <!-- ==================== SEO OPTIMIZATION ==================== -->
-    <title data-i18n-title="title">Art House Architects | Modern Architecture • Interiors • Tbilisi</title>
-    <meta name="description" data-i18n-content="meta.description" content="Art House is an architectural studio delivering individual homes, commercial projects, interior design, and photorealistic 3D visualization — from concept to completion in Tbilisi and across Georgia.">
-    <meta name="keywords" content="architecture Tbilisi, interior design, house design, 3D visualization, commercial buildings, Art House">
+  <link rel="preconnect" href="[fonts.googleapis.com](https://fonts.googleapis.com)">
+  <link rel="preconnect" href="[fonts.gstatic.com](https://fonts.gstatic.com)" crossorigin>
+  <link href="[fonts.googleapis.com](https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&family=Playfair+Display:wght@400;600;700&display=swap)" rel="stylesheet">
 
-    <!-- Hreflang + Canonical -->
-    <link rel="alternate" hreflang="ka" href="https://arthouse.ge/">
-    <link rel="alternate" hreflang="en" href="https://arthouse.ge/en/">
-    <link rel="alternate" hreflang="ru" href="https://arthouse.ge/ru/">
-    <link rel="alternate" hreflang="x-default" href="https://arthouse.ge/">
-    <link rel="canonical" href="https://arthouse.ge/en/">
+  <style>
+    :root { 
+      --primary-dark: #121212; 
+      --secondary-dark: #1a1a1a; 
+      --light-grey: #f8f9fa; 
+      --white: #ffffff; 
+      --accent: #c19b76;
+      --text-main: #555555; 
+      --text-light: #999999;
+    }
 
-    <!-- Open Graph + Twitter -->
-    <meta property="og:title" data-i18n-content="og.title" content="Art House Architects — Modern architecture & design">
-    <meta property="og:description" data-i18n-content="meta.description" content="Art House is an architectural studio delivering individual homes, commercial projects, interior design, and photorealistic 3D visualization — from concept to completion in Tbilisi and across Georgia.">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://arthouse.ge/en/">
-    <meta property="og:image" content="https://arthouse.ge/images/kutaisi-hotel.jpg">
-    <meta property="og:site_name" content="Art House Architects">
-    <meta property="og:locale" content="en_US">
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { color: var(--text-main); background-color: var(--white); line-height: 1.7; font-family: 'Montserrat', sans-serif; font-weight: 300; }
+    
+    h1, h2, h3 { color: var(--primary-dark); font-family: 'Playfair Display', serif; font-weight: 600; }
+    a { text-decoration: none; color: inherit; transition: all 0.3s ease; }
+    a:hover { color: var(--accent); }
 
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Art House Architects">
-    <meta name="twitter:description" data-i18n-content="meta.description" content="Art House is an architectural studio delivering individual homes, commercial projects, interior design, and photorealistic 3D visualization — from concept to completion in Tbilisi and across Georgia.">
-    <meta name="twitter:image" content="https://arthouse.ge/images/kutaisi-hotel.jpg">
+    header { position: fixed; top: 0; width: 100%; background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(10px); padding: 20px 5vw; display: flex; justify-content: space-between; align-items: center; z-index: 1000; border-bottom: 1px solid rgba(0,0,0,0.05); transition: 0.4s; }
+    .logo { font-size: 26px; font-weight: 700; letter-spacing: 2px; font-family: 'Playfair Display', serif; text-transform: uppercase; color: var(--primary-dark); }
+    .logo span { color: var(--accent); }
+    nav ul { list-style: none; display: flex; gap: 40px; }
+    nav ul li a { font-size: 15px; font-weight: 500; letter-spacing: 1.5px; text-transform: uppercase; position: relative; }
+    nav ul li a::after { content: ''; position: absolute; width: 0; height: 1px; bottom: -5px; left: 0; background-color: var(--accent); transition: width 0.3s ease; }
+    nav ul li a:hover::after { width: 100%; }
+    .lang-switch { font-size: 13px; font-weight: 600; letter-spacing: 1px; }
 
-    <meta name="robots" content="index, follow">
+    section { padding: 120px 10vw; }
+    .section-title { text-align: center; margin-bottom: 60px; font-size: 40px; position: relative; padding-bottom: 20px; }
+    .section-title::after { content: ''; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 60px; height: 2px; background-color: var(--accent); }
+    
+    .btn { display: inline-block; padding: 16px 40px; border: 1px solid var(--white); background: transparent; color: var(--white); font-size: 13px; font-weight: 500; text-transform: uppercase; letter-spacing: 2px; cursor: pointer; transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1); }
+    .btn:hover { background: var(--white); color: var(--primary-dark); }
+    .btn-dark { border-color: var(--primary-dark); color: var(--primary-dark); }
+    .btn-dark:hover { background: var(--primary-dark); color: var(--white); }
 
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&amp;family=Playfair+Display:wght@400;600;700&amp;display=swap" rel="stylesheet">
+    #hero { height: 100vh; position: relative; display: flex; flex-direction: column; justify-content: center; align-items: center; color: var(--white); text-align: center; padding: 0 20px; overflow: hidden; background-color: var(--primary-dark); }
+    .hero-bg { position: absolute; inset: 0; background: url('images/hero-bg.webp') center/cover; opacity: 0.6; animation: slowZoom 25s infinite alternate linear; z-index: 0; }
+    @keyframes slowZoom { 0% { transform: scale(1); } 100% { transform: scale(1.15); } }
+    .hero-content { position: relative; z-index: 1; max-width: 800px; }
+    #hero h1 { color: var(--white); font-size: 65px; font-weight: 700; margin-bottom: 20px; letter-spacing: 1px; }
+    #hero p { font-size: 20px; margin-bottom: 40px; font-weight: 300; letter-spacing: 1px; }
 
-    <link rel="stylesheet" href="../assets/css/styles.css">
+    #about { background-color: var(--white); text-align: center; }
+    .about-text { max-width: 800px; margin: 0 auto; font-size: 20px; line-height: 1.9; color: var(--text-main); font-family: 'Playfair Display', serif; font-style: italic; }
+
+    #services { background-color: var(--light-grey); }
+    .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 40px; }
+    .service-card { background: var(--white); padding: 60px 40px; text-align: center; transition: all 0.4s ease; border-top: 3px solid transparent; }
+    .service-card:hover { transform: translateY(-10px); box-shadow: 0 20px 40px rgba(0,0,0,0.04); border-top-color: var(--accent); }
+    .service-card h3 { margin-bottom: 20px; font-size: 22px; }
+    .service-card p { font-size: 16px; }
+    .calc-link { display: inline-block; margin-top: 25px; color: var(--accent); font-weight: 500; font-size: 14px; letter-spacing: 2px; text-transform: uppercase; border-bottom: 1px solid var(--accent); padding-bottom: 3px; }
+
+    .filters { text-align: center; margin-bottom: 50px; }
+    .filter-btn { background: none; border: none; font-size: 14px; font-weight: 600; text-transform: uppercase; margin: 0 20px; cursor: pointer; color: var(--text-light); transition: 0.3s; letter-spacing: 1.5px; padding-bottom: 5px; border-bottom: 1px solid transparent; font-family: 'Montserrat', sans-serif;}
+    .filter-btn:hover, .filter-btn.active { color: var(--primary-dark); border-bottom-color: var(--primary-dark); }
+
+    #portfolio { background-color: var(--white); }
+    .portfolio-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 20px; }
+    .portfolio-item { height: 350px; background-color: var(--light-grey); position: relative; cursor: pointer; overflow: hidden; }
+    .portfolio-img { width: 100%; height: 100%; background-size: cover; background-position: center; transition: transform 0.8s cubic-bezier(0.165, 0.84, 0.44, 1); }
+    .portfolio-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.2) 50%, rgba(0,0,0,0) 100%); display: flex; flex-direction: column; justify-content: flex-end; align-items: flex-start; opacity: 0; transition: opacity 0.4s ease; padding: 40px;}
+    
+    .portfolio-item:hover .portfolio-img { transform: scale(1.08); }
+    .portfolio-item:hover .portfolio-overlay { opacity: 1; }
+    .portfolio-overlay span { color: var(--white); font-size: 22px; font-family: 'Playfair Display', serif; transform: translateY(20px); transition: transform 0.4s ease; }
+    .portfolio-overlay p { color: var(--accent); font-size: 13px; letter-spacing: 2px; text-transform: uppercase; margin-top: 5px; transform: translateY(20px); transition: transform 0.4s ease 0.1s; }
+    .portfolio-item:hover .portfolio-overlay span, .portfolio-item:hover .portfolio-overlay p { transform: translateY(0); }
+
+    #contact { background-color: var(--primary-dark); color: var(--white); padding: 100px 10vw 40px; }
+    #contact .section-title { color: var(--white); }
+    .contact-container { display: flex; flex-wrap: wrap; gap: 60px; justify-content: space-between; max-width: 1200px; margin: 0 auto; }
+    .contact-info { flex: 1; min-width: 300px; }
+    .contact-info h3 { color: var(--white); margin-bottom: 25px; font-size: 24px; }
+    .contact-info p { margin-bottom: 15px; font-size: 17px; color: #a0a0a0; }
+    .contact-info strong { color: var(--white); font-weight: 500;}
+    
+    .social-links { margin-top: 40px; display: flex; gap: 15px; }
+    .social-links a { display: flex; justify-content: center; align-items: center; width: 40px; height: 40px; border: 1px solid rgba(255,255,255,0.2); border-radius: 50%; font-size: 13px; color: var(--white); transition: 0.3s; }
+    .social-links a:hover { background-color: var(--accent); border-color: var(--accent); }
+    
+    .contact-form { flex: 1; min-width: 300px; display: flex; flex-direction: column; gap: 30px; margin-top: 10px;}
+    .contact-form input, .contact-form textarea { width: 100%; padding: 10px 0; background: transparent; border: none; border-bottom: 1px solid rgba(255,255,255,0.2); color: var(--white); font-size: 17px; font-family: 'Montserrat', sans-serif; outline: none; transition: border-color 0.3s; }
+    .contact-form input::placeholder, .contact-form textarea::placeholder { color: #888; }
+    .contact-form input:focus, .contact-form textarea:focus { border-bottom-color: var(--accent); }
+    .contact-form button { align-self: flex-start; background: transparent; color: var(--white); border: 1px solid var(--accent); padding: 15px 40px; font-size: 14px; font-weight: 500; text-transform: uppercase; letter-spacing: 2px; cursor: pointer; transition: 0.3s; }
+    .contact-form button:hover { background: var(--accent); color: var(--primary-dark); }
+
+    .footer-bottom { margin-top: 80px; padding-top: 30px; border-top: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: space-between; flex-wrap: wrap; font-size: 14px; color: #666; letter-spacing: 1px; }
+    .footer-bottom a { color: #888; }
+    .footer-bottom a:hover { color: var(--accent); }
+
+    .modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(10, 10, 10, 0.98); overflow: hidden; }
+    .modal-content { position: relative; margin: auto; top: 50%; transform: translateY(-50%); width: min(96vw, 1680px); max-width: 1680px; text-align: center; }
+    #modalImage { width: 100%; max-width: 100%; max-height: 90vh; object-fit: contain; touch-action: none; user-select: none; }
+    .close-btn { color: var(--white); position: absolute; top: 30px; right: 50px; font-size: 50px; font-weight: 300; cursor: pointer; transition: 0.3s; z-index: 2001; font-family: 'Montserrat', sans-serif;}
+    .close-btn:hover { color: var(--accent); transform: rotate(90deg); }
+    .nav-btn { cursor: pointer; position: absolute; top: 50%; width: 60px; height: 60px; margin-top: -30px; color: white; font-size: 24px; transition: 0.3s; border-radius: 50%; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); z-index: 2001; display: flex; justify-content: center; align-items: center;}
+    .nav-btn:hover { background-color: var(--white); color: var(--primary-dark); }
+    .prev { left: 5%; }
+    .next { right: 5%; }
+    .modal-caption { color: var(--white); font-size: 24px; font-family: 'Playfair Display', serif; margin-top: 25px; }
+    .modal-subcaption { color: var(--accent); font-size: 14px; margin-top: 5px; text-transform: uppercase; letter-spacing: 2px; }
+    .image-counter { color: #666; font-size: 13px; margin-top: 15px; letter-spacing: 2px;}
+
+    .zoom-controls { position: absolute; left: 30px; top: 30px; display: flex; gap: 10px; z-index: 2002; }
+    .zoom-btn { width: 44px; height: 44px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.22); background: rgba(20,20,20,0.55); color: var(--white); font-size: 18px; font-weight: 600; cursor: pointer; backdrop-filter: blur(8px); transition: 0.15s; }
+    .zoom-btn:hover { transform: translateY(-1px); background: rgba(20,20,20,0.7); border-color: rgba(255,255,255,0.32); }
+
+    @media (max-width: 900px) {
+      #hero h1 { font-size: 45px; }
+      section { padding: 80px 5vw; }
+      header { flex-direction: column; padding: 20px; background: rgba(255, 255, 255, 0.98); }
+      nav ul { margin-top: 20px; flex-wrap: wrap; justify-content: center; gap: 20px; }
+      .footer-bottom { flex-direction: column; text-align: center; gap: 10px; }
+    }
+  </style>
 </head>
-<body data-current-lang="en" data-base-path="../">
+<body>
 
-    <!-- HEADER -->
-    <header>
-        <div class="logo">ART <span>HOUSE</span></div>
+  <header>
+    <div class="logo">ART <span>HOUSE</span></div>
+    <nav>
+      <ul>
+        <li><a href="#hero">Home</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#portfolio">Projects</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+    <div class="lang-switch"><a href="#">GE</a> &nbsp;|&nbsp; <a href="#">EN</a> &nbsp;|&nbsp; <a href="#">RU</a></div>
+  </header>
 
-        <nav id="nav-menu">
-            <ul>
-                <li><a href="#hero" data-i18n="nav.home">Home</a></li>
-                <li><a href="#why-us" data-i18n="nav.why">Why Us</a></li>
-                <li><a href="#services" data-i18n="nav.services">Services</a></li>
-                <li><a href="#portfolio" data-i18n="nav.portfolio">Projects</a></li>
-                <li><a href="#contact" data-i18n="nav.contact">Contact</a></li>
-            </ul>
-        </nav>
+  <section id="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-content">
+      <h1>Shaping the Future of Space</h1>
+      <p>Contemporary architecture and ergonomic design</p>
+      <a href="#portfolio" class="btn">See our projects</a>
+    </div>
+  </section>
 
-        <div class="lang-switch">
-            <a href="../" class="lang-btn" data-lang="ka">GE</a> |
-            <a href="./" class="lang-btn active-lang" data-lang="en">EN</a> |
-            <a href="../ru/" class="lang-btn" data-lang="ru">RU</a>
-        </div>
+  <section id="about">
+    <h2 class="section-title">Why “Art House”?</h2>
+    <p class="about-text">
+      “Art House” architectural studio offers full design services for private residences, public and commercial buildings, and interior design. Our team ensures seamless delivery from the initial concept to a built reality.
+    </p>
+  </section>
 
-        <button class="hamburger" id="hamburger" aria-label="Open menu">☰</button>
-    </header>
+  <section id="services">
+    <h2 class="section-title">Our Services</h2>
+    <div class="services-grid">
+      <div class="service-card">
+        <h3>Architecture</h3>
+        <p>End-to-end planning and design for public, commercial, and private residential buildings.</p>
+      </div>
+      <div class="service-card">
+        <h3>Interior Design</h3>
+        <p>Ergonomic space planning, contemporary interiors, and material selection.</p>
+      </div>
+      <div class="service-card">
+        <h3>Cost Estimation</h3>
+        <p>Preliminary consultation and accurate project cost calculation.</p>
+        <a href="[forarchitects.ge](https://www.forarchitects.ge/Arch)" target="_blank" class="calc-link">Open calculator &rarr;</a>
+      </div>
+    </div>
+  </section>
 
-    <main>
-        <!-- HERO -->
-        <section id="hero" role="banner">
-            <div class="hero-bg"></div>
-            <div class="hero-content">
-                <h1 data-i18n="hero.title">Shaping the Future of Space</h1>
-                <p data-i18n="hero.subtitle">Modern Architecture • Ergonomic Interiors • 3D Visualization</p>
-                <a href="#portfolio" class="btn btn-outline-light" data-i18n="hero.cta">View Our Projects</a>
-            </div>
-        </section>
-
-        <!-- WHY US -->
-        <section id="why-us">
-            <h2 class="section-title" data-i18n="why.title">Why Art House?</h2>
-            <div class="why-grid">
-                <div class="why-card">
-                    <span class="icon">🏛️</span>
-                    <h3 data-i18n="why.card1">15+ Years of Experience</h3>
-                    <p data-i18n="why.card1.desc">Creating Georgia’s finest buildings since 2009</p>
-                </div>
-                <div class="why-card">
-                    <span class="icon">📐</span>
-                    <h3 data-i18n="why.card2">Full Project Cycle</h3>
-                    <p data-i18n="why.card2.desc">Sketch → Design → 3D → Construction → Supervision</p>
-                </div>
-                <div class="why-card">
-                    <span class="icon">🌍</span>
-                    <h3 data-i18n="why.card3">International Level</h3>
-                    <p data-i18n="why.card3.desc">Projects in Georgia, Kazakhstan and worldwide</p>
-                </div>
-                <div class="why-card">
-                    <span class="icon">📸</span>
-                    <h3 data-i18n="why.card4">Photorealistic 3D</h3>
-                    <p data-i18n="why.card4.desc">Premium-quality presentations for clients</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- ABOUT -->
-        <section id="about">
-            <h2 class="section-title" data-i18n="about.title">About Us</h2>
-            <p class="about-text" data-i18n="about.text">
-                Art House Architectural Studio provides full design services for individual residential homes, public and commercial buildings, and interiors. Our team delivers the complete implementation of your idea — from sketch to real-world result.
-            </p>
-        </section>
-
-        <!-- SERVICES -->
-        <section id="services">
-            <h2 class="section-title" data-i18n="services.title">Our Services</h2>
-            <div class="services-grid">
-                <div class="service-card"><h3 data-i18n="services.arch">Architecture</h3><p data-i18n="services.arch.desc">Full design for residential, commercial and public buildings</p></div>
-                <div class="service-card"><h3 data-i18n="services.realized">Built Projects</h3><p data-i18n="services.realized.desc">Author supervision and commissioning</p></div>
-                <div class="service-card"><h3 data-i18n="services.interior">Interior Design</h3><p data-i18n="services.interior.desc">Ergonomic planning and premium materials</p></div>
-                <div class="service-card"><h3 data-i18n="services.graphics">3D Visualization</h3><p data-i18n="services.graphics.desc">Photorealistic exterior and interior renders</p></div>
-            </div>
-            <div style="text-align:center; margin-top:80px;">
-                <a href="https://www.forarchitects.ge/Arch" target="_blank" rel="noopener noreferrer" class="btn btn-dark" data-i18n="services.calculator">Project Cost Calculator →</a>
-            </div>
-        </section>
-
-        <!-- PORTFOLIO -->
-        <section id="portfolio">
-            <h2 class="section-title" data-i18n="portfolio.title">Gallery</h2>
-
-            <div class="filters">
-                <button class="filter-btn active" data-filter="all" data-i18n="portfolio.all">All</button>
-                <button class="filter-btn" data-filter="architecture" data-i18n="portfolio.architecture">Architecture</button>
-                <button class="filter-btn" data-filter="realized" data-i18n="portfolio.realized">Built</button>
-                <button class="filter-btn" data-filter="interior" data-i18n="portfolio.interior">Interiors</button>
-                <button class="filter-btn" data-filter="graphics" data-i18n="portfolio.graphics">3D</button>
-            </div>
-
-            <div class="portfolio-grid" id="portfolioGrid">
-                <div class="portfolio-item architecture realized" data-project-key="kutaisi-hotel">
-                    <div class="portfolio-img" style="background-image:url('../images/kutaisi-hotel.jpg');"></div>
-                    <div class="portfolio-overlay">
-                        <span data-i18n="projects.kutaisi-hotel.title">Hotel Complex</span>
-                        <p data-i18n="projects.kutaisi-hotel.details">Kutaisi / 2022</p>
-                    </div>
-                </div>
-                <div class="portfolio-item architecture realized" data-project-key="olympic-hotel">
-                    <div class="portfolio-img" style="background-image:url('../images/olympic-hotel.jpg');"></div>
-                    <div class="portfolio-overlay">
-                        <span data-i18n="projects.olympic-hotel.title">Hotel Olimpieli</span>
-                        <p data-i18n="projects.olympic-hotel.details">Tbilisi / 2015</p>
-                    </div>
-                </div>
-                <div class="portfolio-item architecture" data-project-key="astana-mall">
-                    <div class="portfolio-img" style="background-image:url('../images/astana-mall.jpg');"></div>
-                    <div class="portfolio-overlay">
-                        <span data-i18n="projects.astana-mall.title">Shopping Center</span>
-                        <p data-i18n="projects.astana-mall.details">Astana / 2023</p>
-                    </div>
-                </div>
-                <div class="portfolio-item architecture realized" data-project-key="botanic-cafe">
-                    <div class="portfolio-img" style="background-image:url('../images/botanic-cafe.jpg');"></div>
-                    <div class="portfolio-overlay">
-                        <span data-i18n="projects.botanic-cafe.title">Cafe in the Botanical Garden</span>
-                        <p data-i18n="projects.botanic-cafe.details">Tbilisi / 2023</p>
-                    </div>
-                </div>
-                <div class="portfolio-item architecture" data-project-key="bakuriani-cafe">
-                    <div class="portfolio-img" style="background-image:url('../images/bakuriani-cafe.jpg');"></div>
-                    <div class="portfolio-overlay">
-                        <span data-i18n="projects.bakuriani-cafe.title">Cafe Bar</span>
-                        <p data-i18n="projects.bakuriani-cafe.details">Bakuriani / 2009</p>
-                    </div>
-                </div>
-                <div class="portfolio-item architecture realized" data-project-key="kiu-block">
-                    <div class="portfolio-img" style="background-image:url('../images/kiu-block.jpg');"></div>
-                    <div class="portfolio-overlay">
-                        <span data-i18n="projects.kiu-block.title">Building “K”</span>
-                        <p data-i18n="projects.kiu-block.details">Kutaisi University / 2020</p>
-                    </div>
-                </div>
-                <div class="portfolio-item architecture realized" data-project-key="evangelist-center">
-                    <div class="portfolio-img" style="background-image:url('../images/evangelist-center.jpg');"></div>
-                    <div class="portfolio-overlay">
-                        <span data-i18n="projects.evangelist-center.title">Evangelists Center</span>
-                        <p data-i18n="projects.evangelist-center.details">Kutaisi / 2019</p>
-                    </div>
-                </div>
-                <div class="portfolio-item interior realized" data-project-key="aesthetic-center">
-                    <div class="portfolio-img" style="background-image:url('../images/aesthetic-center.jpg');"></div>
-                    <div class="portfolio-overlay">
-                        <span data-i18n="projects.aesthetic-center.title">Aesthetics Center</span>
-                        <p data-i18n="projects.aesthetic-center.details">Tbilisi / 2013</p>
-                    </div>
-                </div>
-                <div class="portfolio-item architecture realized" data-project-key="rikoti-emergency">
-                    <div class="portfolio-img" style="background-image:url('../images/rikoti-emergency.jpg');"></div>
-                    <div class="portfolio-overlay">
-                        <span data-i18n="projects.rikoti-emergency.title">Emergency Rikoti</span>
-                        <p data-i18n="projects.rikoti-emergency.details">Boriti / 2008</p>
-                    </div>
-                </div>
-                <div class="portfolio-item architecture realized" data-project-key="proservice-data">
-                    <div class="portfolio-img" style="background-image:url('../images/proservice-data.jpg');"></div>
-                    <div class="portfolio-overlay">
-                        <span data-i18n="projects.proservice-data.title">Proservice Data Center</span>
-                        <p data-i18n="projects.proservice-data.details">Tbilisi / 2013</p>
-                    </div>
-                </div>
-                <div class="portfolio-item architecture realized" data-project-key="intelcom-office">
-                    <div class="portfolio-img" style="background-image:url('../images/intelcom-office.jpg');"></div>
-                    <div class="portfolio-overlay">
-                        <span data-i18n="projects.intelcom-office.title">Intelcom Office Building</span>
-                        <p data-i18n="projects.intelcom-office.details">Tbilisi / 2014</p>
-                    </div>
-                </div>
-                <div class="portfolio-item architecture realized" data-project-key="pantiani-house">
-                    <div class="portfolio-img" style="background-image:url('../images/pantiani-house.jpg');"></div>
-                    <div class="portfolio-overlay">
-                        <span data-i18n="projects.pantiani-house.title">Residential House</span>
-                        <p data-i18n="projects.pantiani-house.details">Pantiani / 2022</p>
-                    </div>
-                </div>
-                <div class="portfolio-item architecture realized" data-project-key="kaklebi-2010">
-                    <div class="portfolio-img" style="background-image:url('../images/kaklebi-2010.jpg');"></div>
-                    <div class="portfolio-overlay">
-                        <span data-i18n="projects.kaklebi-2010.title">Residential House</span>
-                        <p data-i18n="projects.kaklebi-2010.details">Kaklebi / 2010</p>
-                    </div>
-                </div>
-                <div class="portfolio-item graphics architecture" data-project-key="kaklebi-2023">
-                    <div class="portfolio-img" style="background-image:url('../images/kaklebi-2023.jpg');"></div>
-                    <div class="portfolio-overlay">
-                        <span data-i18n="projects.kaklebi-2023.title">Residential House (3D)</span>
-                        <p data-i18n="projects.kaklebi-2023.details">Kaklebi / 2023</p>
-                    </div>
-                </div>
-                <div class="portfolio-item architecture realized" data-project-key="dighomi-house">
-                    <div class="portfolio-img" style="background-image:url('../images/dighomi-house.jpg');"></div>
-                    <div class="portfolio-overlay">
-                        <span data-i18n="projects.dighomi-house.title">Residential House</span>
-                        <p data-i18n="projects.dighomi-house.details">Dighomi / 2012</p>
-                    </div>
-                </div>
-                <div class="portfolio-item architecture realized" data-project-key="saguramo-2007">
-                    <div class="portfolio-img" style="background-image:url('../images/saguramo-2007.jpg');"></div>
-                    <div class="portfolio-overlay">
-                        <span data-i18n="projects.saguramo-2007.title">Residential House</span>
-                        <p data-i18n="projects.saguramo-2007.details">Saguramo / 2007</p>
-                    </div>
-                </div>
-                <div class="portfolio-item graphics architecture" data-project-key="natakhtari-house">
-                    <div class="portfolio-img" style="background-image:url('../images/natakhtari-house.jpg');"></div>
-                    <div class="portfolio-overlay">
-                        <span data-i18n="projects.natakhtari-house.title">Residential House (3D)</span>
-                        <p data-i18n="projects.natakhtari-house.details">Natakhtari / 2021</p>
-                    </div>
-                </div>
-                <div class="portfolio-item graphics architecture" data-project-key="saguramo-2021">
-                    <div class="portfolio-img" style="background-image:url('../images/saguramo-2021.jpg');"></div>
-                    <div class="portfolio-overlay">
-                        <span data-i18n="projects.saguramo-2021.title">Residential House (3D)</span>
-                        <p data-i18n="projects.saguramo-2021.details">Saguramo / 2021</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- CONTACT -->
-        <section id="contact">
-            <h2 class="section-title" data-i18n="contact.title">Contact Us</h2>
-            <div class="contact-container">
-                <div class="contact-info">
-                    <h3 data-i18n="contact.info">Contact Information</h3>
-                    <p><strong data-i18n="contact.phone.label">Phone:</strong> +032 236 86 30</p>
-                    <p><strong data-i18n="contact.email.label">Email:</strong> contact@arthouse.ge</p>
-                    <p style="margin-top:30px;"><strong data-i18n="contact.partners">Partners:</strong> <a href="http://www.materialzon.com" target="_blank" rel="noopener noreferrer" style="color:#c19b76;">Materialzon.com</a></p>
-                </div>
-                <form class="contact-form" action="#" method="POST">
-                    <input type="text" data-i18n-placeholder="contact.name" placeholder="Your name" required>
-                    <input type="email" data-i18n-placeholder="contact.email" placeholder="Email" required>
-                    <textarea rows="5" data-i18n-placeholder="contact.message" placeholder="Message..." required></textarea>
-                    <button type="submit" data-i18n="contact.submit">Send</button>
-                </form>
-            </div>
-        </section>
-    </main>
-
-    <!-- FOOTER -->
-    <footer>
-        <p data-i18n="footer.copyright">© 2009–2026 LLC “Art House” — All rights reserved</p>
-        <p data-i18n="footer.made">Made by <a href="http://www.proservice.ge/" target="_blank" rel="noopener noreferrer" style="color:#c19b76;">Proservice.ge</a></p>
-    </footer>
-
-    <!-- GALLERY MODAL -->
-    <div id="galleryModal" class="modal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="modalCaption">
-        <button class="close-btn" type="button" aria-label="Close">×</button>
-        <div class="modal-content" role="document">
-            <div class="zoom-controls" aria-label="Zoom controls">
-                <button class="zoom-btn" type="button" data-zoom="in" aria-label="Zoom in">+</button>
-                <button class="zoom-btn" type="button" data-zoom="out" aria-label="Zoom out">−</button>
-                <button class="zoom-btn" type="button" data-zoom="reset" aria-label="Reset zoom">⤾</button>
-            </div>
-            <img id="modalImage" src="" alt="">
-            <div class="modal-caption" id="modalCaption"></div>
-            <div class="modal-subcaption" id="modalSubcaption"></div>
-        </div>
+  <section id="portfolio">
+    <h2 class="section-title">Completed Projects</h2>
+    
+    <div class="filters">
+      <button class="filter-btn active" onclick="filterProjects('all')">All</button>
+      <button class="filter-btn" onclick="filterProjects('commercial')">Commercial</button>
+      <button class="filter-btn" onclick="filterProjects('residential')">Residential</button>
     </div>
 
-    <script type="module" src="../assets/js/main.js"></script>
-</body>
-</html>
-
+    <div class="portfolio-grid">
+      <div class="portfolio-item commercial" onclick="openModal('kutaisi-hotel')">
+        <div class="portfolio-img" style="background-image: url('images/kutaisi-hotel.jpg');"></div>
+        <div class="portfolio-overlay"><span>Hotel Complex</span><p>Kutaisi / 2022</p></div>
+      </div>
+      <div class="portfolio-item commercial" onclick="openModal('olympic-hotel')">
+        <div class="portfolio-img" style="background-image: url('images/olympic-hotel.jpg');"></div>
+        <div class="portfolio-overlay"><span>Olympic Hotel</span><p>Tbilisi / 2015</p></div>
+      </div>
+      <div class="portfolio-item commercial" onclick="openModal('astana-mall')">
+        <div class="portfolio-img" style="background-image: url('images/astana-mall.jpg');"></div>
+        <div class="portfolio-overlay"><span>Shopping Center</span><p>Astana / 2023</p></div>
+      </div>
+      <div class="portfolio-item commercial" onclick="openModal('botanic-cafe')">
+        <div class="portfolio-img" style="background-image: url('images/botanic-cafe.jpg');"></div>
+        <div class="portfolio-overlay"><span>Botanical Garden Cafe</span><p>Tbilisi / 2023</p></div>
+      </div>
+      <div class="portfolio-item commercial" onclick="openModal('bakuriani-cafe')">
+        <div class="portfolio-img" style="background-image: url('images/bakuriani-cafe.jpg');"></div>
+        <div class="portfolio-overlay"><span>Cafe-Bar</span><p>Bakuriani / 2009</p></div>
+      </div>
+      <div class="portfolio-item commercial" onclick="openModal('kiu-block')">
+        <div class="portfolio-img" style="background-image: url('images/kiu-block.jpg');"></div>
+        <div class="portfolio-overlay"><span>Building “K”</span><p>Kutaisi International University / 2020</p></div>
+      </div>
+      <div class="portfolio-item commercial" onclick="openModal('evangelist-center')">
+        <div class="portfolio-img" style="background-image: url('images/evangelist-center.jpg');"></div>
+        <div class="portfolio-overlay"><span>Evangelists Center</span><p>Kutaisi / 2019</p></div>
+      </div>
+      <div class="portfolio-item commercial" onclick="openModal('aesthetic-center')">
+        <div class="portfolio-img" style="background-image: url('images/aesthetic-center.jpg');"></div>
+        <div class="portfolio-overlay"><span>Aesthetic Center</span><p>Tbilisi / 2013</p></div>
+      </div>
+      <div class="portfolio-item commercial" onclick="openModal('rikoti-emergency')">
+        <div class="portfolio-img" style="background-image: url('images/rik
