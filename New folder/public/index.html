@@ -1,0 +1,503 @@
+<!doctype html>
+<html lang="ka" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BuildHub — API ტესტერი</title>
+<style>
+  :root{
+    --bg:#0f1115; --panel:#171a21; --panel2:#1e222c; --line:#2a2f3a;
+    --text:#e6e9ef; --muted:#8b93a5; --accent:#4f8cff; --ok:#2ecc71;
+    --warn:#f5c451; --err:#ff6b6b; --radius:10px;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; background:var(--bg); color:var(--text);
+    font:15px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif;
+  }
+  header{
+    padding:20px 24px; border-bottom:1px solid var(--line);
+    display:flex; align-items:baseline; gap:16px; flex-wrap:wrap;
+    position:sticky; top:0; background:var(--bg); z-index:10;
+  }
+  header h1{margin:0; font-size:19px}
+  header .meta{color:var(--muted); font-size:13px}
+  header .grow{flex:1}
+  main{max-width:1080px; margin:0 auto; padding:24px}
+  section{
+    background:var(--panel); border:1px solid var(--line);
+    border-radius:var(--radius); padding:18px; margin-bottom:16px;
+  }
+  section h2{margin:0 0 4px; font-size:16px}
+  section .hint{color:var(--muted); font-size:13px; margin:0 0 14px}
+  label{display:block; font-size:13px; color:var(--muted); margin:10px 0 4px}
+  input,select,textarea{
+    width:100%; padding:9px 11px; background:var(--panel2);
+    border:1px solid var(--line); border-radius:7px; color:var(--text);
+    font:14px/1.4 ui-monospace,SFMono-Regular,Menlo,monospace;
+  }
+  input:focus,select:focus,textarea:focus{outline:none; border-color:var(--accent)}
+  textarea{min-height:72px; resize:vertical}
+  .row{display:flex; gap:10px; flex-wrap:wrap}
+  .row > *{flex:1; min-width:160px}
+  button{
+    padding:9px 16px; border-radius:7px; border:1px solid var(--accent);
+    background:var(--accent); color:#fff; font:600 14px system-ui,sans-serif;
+    cursor:pointer; margin-top:14px;
+  }
+  button:hover{opacity:.9}
+  button:disabled{opacity:.5; cursor:not-allowed}
+  button.ghost{background:transparent; color:var(--text); border-color:var(--line)}
+  button.sm{padding:6px 12px; font-size:13px; margin-top:0}
+  .chips{display:flex; gap:8px; flex-wrap:wrap; margin-bottom:12px}
+  .chip{
+    padding:6px 12px; border-radius:999px; border:1px solid var(--line);
+    background:var(--panel2); color:var(--muted); font-size:13px; cursor:pointer;
+  }
+  .chip.active{border-color:var(--accent); color:var(--text); background:#20304d}
+  pre{
+    background:#0b0d12; border:1px solid var(--line); border-radius:8px;
+    padding:12px; overflow:auto; max-height:340px; margin:14px 0 0;
+    font:13px/1.5 ui-monospace,SFMono-Regular,Menlo,monospace; white-space:pre-wrap;
+    word-break:break-word;
+  }
+  .status{display:inline-flex; align-items:center; gap:7px; font-size:13px; font-weight:600}
+  .dot{width:9px; height:9px; border-radius:50%; background:var(--muted)}
+  .dot.ok{background:var(--ok)} .dot.err{background:var(--err)} .dot.warn{background:var(--warn)}
+  .s-ok{color:var(--ok)} .s-err{color:var(--err)} .s-warn{color:var(--warn)}
+  .kv{display:grid; grid-template-columns:180px 1fr; gap:6px 14px; font-size:13px}
+  .kv div:nth-child(odd){color:var(--muted)}
+  code{background:var(--panel2); padding:2px 6px; border-radius:5px; font-size:13px}
+  .warnbox{
+    background:#2a2313; border:1px solid #5c4a15; border-radius:8px;
+    padding:12px; font-size:13px; color:#f0d68a; margin-bottom:16px;
+  }
+  footer{max-width:1080px; margin:0 auto; padding:0 24px 40px; color:var(--muted); font-size:12px}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>BuildHub — API ტესტერი</h1>
+  <span class="meta">ენდპოინტებს პირდაპირ ამ გვერდიდან იძახებს</span>
+  <span class="grow"></span>
+  <span class="status"><span class="dot" id="apiDot"></span><span id="apiState">API — შეუმოწმებელი</span></span>
+</header>
+
+<main>
+
+<div class="warnbox">
+  გვერდი იტვირთება იმავე სერვერიდან, სადაც API მუშაობს — ამიტომ ცალკე მისამართი არ სჭირდება.
+  გახსენით <code>http://localhost:3000/test.html</code> (ან დომენზე <code>/test.html</code>),
+  როცა <code>npm run dev</code> გაშვებულია.
+</div>
+
+<section>
+  <h2>1. API-ის მისამართი</h2>
+  <p class="hint">
+    სერვერის მისამართი. თუ ბექენდი სხვა პორტზეა, შეცვალეთ —
+    CORS ამ შემთხვევაში ბრაუზერის ბარიერია და ბექენდს ჰედერი სჭირდება.
+  </p>
+  <div class="row">
+    <div>
+      <label>Base URL</label>
+      <input id="baseUrl" value="">
+    </div>
+    <div style="flex:0 0 auto; min-width:0">
+      <label>&nbsp;</label>
+      <button class="ghost" onclick="checkApi()">შემოწმება</button>
+    </div>
+  </div>
+  <pre id="outHealth">—</pre>
+</section>
+
+<section>
+  <h2>2. ავტორიზაცია</h2>
+  <p class="hint">
+    შესვლის შემდეგ ტოკენი ინახება ბრაუზერში და შემდეგი მოთხოვნები ავტომატურად
+    ავტორიზებულია. სესია არ არის საჭირო საჯარო ენდპოინტებისთვის.
+  </p>
+  <div class="row">
+    <div>
+      <label>ელფოსტა</label>
+      <input id="email" type="email" placeholder="you@example.ge" autocomplete="username">
+    </div>
+    <div>
+      <label>პაროლი</label>
+      <input id="password" type="password" placeholder="••••••••" autocomplete="current-password">
+    </div>
+  </div>
+  <div class="row">
+    <div>
+      <label>2FA კოდი (მხოლოდ ადმინისთვის)</label>
+      <input id="totp" placeholder="000000" maxlength="6">
+    </div>
+    <div>
+      <label>რეგისტრაციის ტიპი</label>
+      <select id="regType">
+        <option value="individual">კერძო პირი</option>
+        <option value="company">ორგანიზაცია</option>
+      </select>
+    </div>
+  </div>
+  <div class="chips" style="margin-top:14px">
+    <button class="sm" onclick="login()">შესვლა</button>
+    <button class="sm ghost" onclick="register()">რეგისტრაცია</button>
+    <button class="sm ghost" onclick="logout()">სესიის გასუფთავება</button>
+    <button class="sm ghost" onclick="whoami()">ვინ ვარ</button>
+  </div>
+  <div id="sessionBox" class="kv" style="margin-top:14px"></div>
+  <pre id="outAuth">—</pre>
+</section>
+
+<section>
+  <h2>3. კატალოგი</h2>
+  <p class="hint">საჯაროა — ავტორიზაცია არ სჭირდება. ცარიელი შედეგი ნიშნავს, რომ Meilisearch ან ინდექსი ჯერ არ არის მზად.</p>
+  <div class="row">
+    <div><label>ძებნა (q)</label><input id="q" placeholder="ცემენტი"></div>
+    <div>
+      <label>ტიპი</label>
+      <select id="fType"><option value="">ყველა</option><option value="material">მასალა</option><option value="service">მომსახურება</option></select>
+    </div>
+    <div>
+      <label>დახარისხება</label>
+      <select id="fSort">
+        <option value="relevance">შესაბამისობა</option>
+        <option value="date">თარიღი</option>
+        <option value="price_asc">ფასი ↑</option>
+        <option value="price_desc">ფასი ↓</option>
+        <option value="rating">რეიტინგი</option>
+        <option value="verified">ვერიფიკაცია</option>
+      </select>
+    </div>
+    <div><label>ფასი min</label><input id="pMin" type="number" placeholder="0"></div>
+    <div><label>ფასი max</label><input id="pMax" type="number" placeholder="10000"></div>
+  </div>
+  <button onclick="loadListings()">განცხადებების ჩატვირთვა</button>
+  <pre id="outListings">—</pre>
+</section>
+
+<section>
+  <h2>4. განცხადების შექმნა → გადახდა → გამოქვეყნება</h2>
+  <p class="hint">
+    მთელი ნაკადის ტესტი. განცხადება დარჩება <code>draft</code>-ად, სანამ webhook არ დადასტურდება —
+    ქვემოთ ხელმოწერილი webhook-ის ღილაკიც არის.
+  </p>
+  <div class="row">
+    <div>
+      <label>ტიპი</label>
+      <select id="lType" onchange="syncAttrs()"><option value="material">მასალა</option><option value="service">მომსახურება</option></select>
+    </div>
+    <div>
+      <label>პაკეტი</label>
+      <select id="lPackage">
+        <option value="standard">სტანდარტი — 30 დღე, 25 ₾</option>
+        <option value="extended">გაფართოებული — 60 დღე, 45 ₾</option>
+        <option value="premium">პრემიუმი — 90 დღე, 79 ₾</option>
+        <option value="unlimited">ულიმიტო — თვიური, 199 ₾</option>
+      </select>
+    </div>
+    <div>
+      <label>პროვაიდერი</label>
+      <select id="lProvider">
+        <option value="payze">Payze</option><option value="tbc">TBC iPay</option>
+        <option value="bog">BoG bpay</option><option value="stripe">Stripe</option>
+      </select>
+    </div>
+  </div>
+  <div class="row">
+    <div><label>სათაური (ka:...|en:...)</label><input id="lTitle" value="ka:ცემენტი M400|en:Cement M400"></div>
+    <div><label>ფასი</label><input id="lPrice" type="number" value="25"></div>
+    <div><label>ვალუტა</label>
+      <select id="lCurrency"><option>GEL</option><option>USD</option><option>EUR</option><option>TRY</option></select>
+    </div>
+  </div>
+  <div class="row">
+    <div><label>აღწერა (ka:...|en:...)</label><input id="lDesc" value="ka:მაღალი ხარისხის ცემენტი|en:High grade cement"></div>
+    <div><label>კატეგორიის ID</label><input id="lCategory" value="11111111-1111-1111-1111-111111111101"></div>
+  </div>
+  <div class="row">
+    <div><label>ლოკაცია</label><input id="lLocation" value="თბილისი"></div>
+    <div id="attrUnit"><label>ერთეული</label>
+      <select id="lUnit"><option value="piece">ცალი</option><option value="ton">ტონა</option><option value="m2">მ²</option><option value="m3">მ³</option><option value="pack">შეკვრა</option></select>
+    </div>
+    <div id="attrPriceModel" style="display:none"><label>ფასის მოდელი</label>
+      <select id="lPriceModel"><option value="hour">საათი</option><option value="day">დღე</option><option value="project">პროექტი</option><option value="negotiable">შეთანხმებით</option></select>
+    </div>
+  </div>
+  <div class="chips" style="margin-top:14px">
+    <button class="sm" onclick="createListing()">1. განცხადების შექმნა</button>
+    <button class="sm ghost" onclick="createCheckout()">2. გადახდის სესია</button>
+    <button class="sm ghost" onclick="fakeWebhook()">3. ხელმოწერილი webhook</button>
+  </div>
+  <div class="kv" style="margin-top:12px">
+    <div>ბოლო listingId</div><div><code id="lastListingId">—</code></div>
+    <div>ბოლო paymentId</div><div><code id="lastPaymentId">—</code></div>
+    <div>მდგომარეობა</div><div id="flowState">—</div>
+  </div>
+  <pre id="outFlow">—</pre>
+</section>
+
+<section>
+  <h2>5. სხვა ენდპოინტები</h2>
+  <p class="hint">ღილაკები თანმიმდევრობით სცადეთ — ზოგი ავტორიზაციას მოითხოვს.</p>
+  <div class="chips">
+    <button class="sm ghost" onclick="call('GET','/api/i18n/ka','out2')">ლექსიკონი ka</button>
+    <button class="sm ghost" onclick="call('GET','/api/certificates','out2')">ჩემი სერთიფიკატები</button>
+    <button class="sm ghost" onclick="call('GET','/api/conversations','out2')">მიმოწერები</button>
+    <button class="sm ghost" onclick="call('GET','/api/reviews?targetId='+prompt('targetId:')||'','out2')">შეფასებები</button>
+    <button class="sm ghost" onclick="call('GET','/api/admin/stats','out2')">ადმინი: სტატისტიკა</button>
+    <button class="sm ghost" onclick="call('GET','/api/admin/payments','out2')">ადმინი: გადახდები</button>
+    <button class="sm ghost" onclick="call('GET','/api/cron/fx-rates?secret='+prompt('CRON_SECRET:')||'','out2')">Cron: კურსები</button>
+    <button class="sm ghost" onclick="call('GET','/api/cron/maintenance?secret='+prompt('CRON_SECRET:')||'','out2')">Cron: ტექნიკური</button>
+  </div>
+  <pre id="out2">—</pre>
+</section>
+
+</main>
+
+<footer>
+  ტესტერი მხოლოდ ლოკალური გაშვებისთვისაა. პროდაქშენში ეს ფაილი წაშალეთ —
+  <code>public/test.html</code> საჯაროდ ხელმისაწვდომია.
+</footer>
+
+<script>
+// ── მისამართი ────────────────────────────────────────────────────────────
+const $ = (id) => document.getElementById(id);
+const base = () => $('baseUrl').value.replace(/\/+$/, '');
+
+$('baseUrl').value = location.origin;
+
+let token = localStorage.getItem('bh_token') || '';
+
+function headers(extra) {
+  const h = { 'content-type': 'application/json', ...(extra || {}) };
+  if (token) h.authorization = 'Bearer ' + token;
+  return h;
+}
+
+function show(id, data, status) {
+  const el = $(id);
+  let text = typeof data === 'string' ? data : JSON.stringify(data, null, 2);
+  el.textContent = (status ? '[' + status + ']\n' : '') + text;
+}
+
+function setDot(state, label) {
+  const d = $('apiDot');
+  d.className = 'dot ' + (state === 'ok' ? 'ok' : state === 'err' ? 'err' : 'warn');
+  $('apiState').textContent = label;
+}
+
+// ── მოთხოვნა ─────────────────────────────────────────────────────────────
+async function call(method, path, outId, body, extraHeaders) {
+  const url = base() + path;
+  const started = performance.now();
+  try {
+    const res = await fetch(url, {
+      method,
+      headers: headers(extraHeaders),
+      body: body ? JSON.stringify(body) : undefined,
+    });
+    const ms = Math.round(performance.now() - started);
+    const text = await res.text();
+    let parsed;
+    try { parsed = JSON.parse(text); } catch { parsed = text; }
+
+    show(outId, { ok: res.ok, status: res.status, ms, url, body: parsed }, null);
+    return { res, parsed };
+  } catch (err) {
+    show(outId, { ok: false, error: String(err), url,
+      hint: 'სერვერი გაშვებულია? ხომ არ არის CORS ბარიერი?' }, null);
+    return { res: null, parsed: null };
+  }
+}
+
+// ── 1. ჯანმრთელობა ──────────────────────────────────────────────────────
+async function checkApi() {
+  setDot('warn', 'მოწმდება...');
+  const { res } = await call('GET', '/api/i18n/ka', 'outHealth');
+  if (res && res.ok) { setDot('ok', 'API მუშაობს'); return; }
+  if (res) { setDot('err', 'API პასუხობს ' + res.status); return; }
+  setDot('err', 'სერვერი მიუწვდომელია');
+}
+
+// ── 2. ავტორიზაცია ───────────────────────────────────────────────────────
+function renderSession() {
+  const box = $('sessionBox');
+  if (!token) { box.innerHTML = '<div>სესია</div><div>არა — ტოკენი არ არის</div>'; return; }
+  const payload = JSON.parse(atob(token.split('.')[1] || 'e30='));
+  box.innerHTML = `
+    <div>ტოკენი</div><div><code>${token.slice(0, 24)}…</code></div>
+    <div>მომხმარებელი</div><div><code>${payload.sub || '—'}</code></div>
+    <div>ვადა</div><div>${payload.exp ? new Date(payload.exp * 1000).toLocaleString('ka-GE') : '—'}</div>`;
+}
+renderSession();
+
+async function login() {
+  const body = { email: $('email').value, password: $('password').value };
+  if ($('totp').value) body.totp = $('totp').value;
+
+  const { parsed } = await call('POST', '/api/auth/login', 'outAuth', body);
+  if (parsed && parsed.accessToken) {
+    token = parsed.accessToken;
+    localStorage.setItem('bh_token', token);
+    renderSession();
+    show('outAuth', { ok: true, message: 'სესია გახსნილია', user: parsed.user }, null);
+  }
+}
+
+async function register() {
+  const type = $('regType').value;
+  const body = {
+    type,
+    email: $('email').value,
+    password: $('password').value,
+    locale: 'ka',
+    currency: 'GEL',
+    gdprConsent: true,
+  };
+  if (type === 'individual') {
+    body.individual = { firstName: 'ტესტ', lastName: 'მომხმარებელი', phone: '+995555000000' };
+  } else {
+    body.company = {
+      name: 'ტესტ კომპანია', taxId: '123456789',
+      legalAddress: 'თბილისი, ტესტის ქ. 1', contactPerson: 'ტესტ მომხმარებელი',
+    };
+  }
+  await call('POST', '/api/auth/register', 'outAuth', body);
+}
+
+function logout() {
+  token = '';
+  localStorage.removeItem('bh_token');
+  renderSession();
+  show('outAuth', { ok: true, message: 'ტოკენი წაიშალა' }, null);
+}
+
+async function whoami() {
+  if (!token) { show('outAuth', { ok: false, message: 'ტოკენი არ არის' }, null); return; }
+  await call('GET', '/api/i18n/ka', 'outAuth');   // სესიის შესამოწმებლად
+}
+
+// ── 3. კატალოგი ──────────────────────────────────────────────────────────
+async function loadListings() {
+  const p = new URLSearchParams();
+  if ($('q').value) p.set('q', $('q').value);
+  if ($('fType').value) p.set('type', $('fType').value);
+  if ($('fSort').value) p.set('sort', $('fSort').value);
+  if ($('pMin').value) p.set('priceMin', $('pMin').value);
+  if ($('pMax').value) p.set('priceMax', $('pMax').value);
+  p.set('perPage', '10');
+  await call('GET', '/api/listings?' + p.toString(), 'outListings');
+}
+
+// ── 4. ნაკადი ────────────────────────────────────────────────────────────
+function syncAttrs() {
+  const isService = $('lType').value === 'service';
+  $('attrUnit').style.display = isService ? 'none' : '';
+  $('attrPriceModel').style.display = isService ? '' : 'none';
+  $('lCategory').value = isService
+    ? '11111111-1111-1111-1111-111111111201'
+    : '11111111-1111-1111-1111-111111111101';
+}
+syncAttrs();
+
+let lastListingId = null;
+let lastPaymentId = null;
+
+function flow(msg) { $('flowState').textContent = msg; }
+
+async function createListing() {
+  const isService = $('lType').value === 'service';
+  const body = {
+    type: $('lType').value,
+    categoryId: $('lCategory').value,
+    title: $('lTitle').value,
+    description: $('lDesc').value,
+    price: Number($('lPrice').value) || 0,
+    priceOnRequest: false,
+    currency: $('lCurrency').value,
+    location: $('lLocation').value,
+    packageCode: $('lPackage').value,
+    attributes: isService
+      ? { priceModel: $('lPriceModel').value, workRadiusKm: 30 }
+      : { unit: $('lUnit').value, stock: 100 },
+  };
+
+  const { parsed } = await call('POST', '/api/listings', 'outFlow', body);
+  if (parsed && parsed.listing) {
+    lastListingId = parsed.listing.id;
+    $('lastListingId').textContent = lastListingId;
+    flow('განცხადება შექმნილია — სტატუსი: ' + parsed.listing.status);
+  }
+}
+
+async function createCheckout() {
+  if (!lastListingId) { flow('ჯერ შექმენით განცხადება'); return; }
+
+  const body = {
+    subjectType: 'listing',
+    subjectId: lastListingId,
+    packageCode: $('lPackage').value,
+    provider: $('lProvider').value,
+    currency: $('lCurrency').value,
+    locale: 'ka',
+  };
+
+  // idempotency-key სავალდებულოა — გამეორებული გაგზავნა ახალ გადახდას არ ქმნის
+  const key = 'test-' + lastListingId + '-' + Date.now();
+  const { parsed } = await call('POST', '/api/payments/checkout', 'outFlow', body,
+    { 'idempotency-key': key });
+
+  if (parsed && parsed.payment) {
+    lastPaymentId = parsed.payment.id;
+    $('lastPaymentId').textContent = lastPaymentId;
+    flow('გადახდა შექმნილია — სტატუსი: ' + parsed.payment.status
+      + ' | გადამისამართება: ' + (parsed.redirectUrl ? 'მიღებულია' : '—'));
+  }
+}
+
+async function fakeWebhook() {
+  if (!lastPaymentId) { flow('ჯერ გაჭიმეთ გადახდის სესია'); return; }
+
+  const pkg = { standard: 25, extended: 45, premium: 79, unlimited: 199 }[$('lPackage').value];
+  const payload = {
+    eventId: 'evt-' + Date.now(),
+    transactionId: 'tx-' + Date.now(),
+    amount: pkg,
+    currency: 'GEL',
+    status: 'paid',
+  };
+
+  const provider = $('lProvider').value;
+  const secret = prompt('PAYMENT_SECRET_' + provider.toUpperCase() + ' (გარემოს ცვლადის მნიშვნელობა):');
+  if (!secret) { flow('webhook გაუქმდა — გასაღები არ შეყვანილა'); return; }
+
+  const raw = JSON.stringify(payload);
+  const sig = await hmacHex(secret, raw);
+
+  const headerName = provider === 'payze' ? 'x-payze-signature'
+    : provider === 'stripe' ? 'stripe-signature'
+    : 'x-' + provider + '-signature';
+
+  const extra = {};
+  extra[headerName] = sig;
+
+  await call('POST', '/api/payments/webhook/' + provider, 'outFlow', payload, extra);
+  flow('webhook გაგზავნილია — შეამოწმეთ განცხადების სტატუსი (უნდა იყოს active)');
+  await call('GET', '/api/listings/' + lastListingId, 'outFlow');
+}
+
+async function hmacHex(secret, message) {
+  const enc = new TextEncoder();
+  const key = await crypto.subtle.importKey(
+    'raw', enc.encode(secret), { name: 'HMAC', hash: 'SHA-256' }, false, ['sign']);
+  const buf = await crypto.subtle.sign('HMAC', key, enc.encode(message));
+  return [...new Uint8Array(buf)].map((b) => b.toString(16).padStart(2, '0')).join('');
+}
+
+// ── გაშვებისას ───────────────────────────────────────────────────────────
+checkApi();
+</script>
+</body>
+</html>
